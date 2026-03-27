@@ -146,7 +146,7 @@ function RouteComponent() {
         <div className="text-sm text-destructive px-2">{error}</div>
       )}
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-end gap-2">
         <Button
           onClick={handleTranslate}
           disabled={isLoading}
