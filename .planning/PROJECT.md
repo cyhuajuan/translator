@@ -15,18 +15,18 @@
 - ✓ Tauri 2 桌面应用框架 — existing
 - ✓ React 19 前端 + TypeScript — existing
 - ✓ Tailwind CSS v4 + shadcn/ui 组件库 — existing
+- ✓ 用户可选择源语言（中文/英文/日文）— Phase 01
+- ✓ 用户可选择目标语言（中文/英文/日文）— Phase 01
+- ✓ 用户输入文本后点击按钮触发翻译 — Phase 01
+- ✓ 调用本地 Ollama translategemma 模型进行翻译 — Phase 01
+- ✓ 显示加载动画直至翻译完成 — Phase 01
+- ✓ Ollama 未运行时显示友好错误提示 — Phase 01
+- ✓ 一键清空两个文本框 — Phase 01
+- ✓ 用户可一键互换源/目标语言 — Phase 01
 
 ### Active
 
-- [ ] 用户可选择源语言（中文/英文/日文）
-- [ ] 用户可选择目标语言（中文/英文/日文）
 - [ ] 语言选择记录上次配置并自动恢复
-- [ ] 用户可一键互换源/目标语言
-- [ ] 用户输入文本后点击按钮触发翻译
-- [ ] 调用本地 Ollama translategemma 模型进行翻译
-- [ ] 显示加载动画直至翻译完成
-- [ ] Ollama 未运行时显示友好错误提示
-- [ ] 一键清空两个文本框
 
 ### Out of Scope
 
@@ -70,7 +70,7 @@ You are a professional {SOURCE_LANG} ({SOURCE_CODE}) to {TARGET_LANG} ({TARGET_C
 
 ---
 
-*Last updated: 2026-03-27 after initialization*
+*Last updated: 2026-03-27 after Phase 01 completion*
 
 ## Evolution
 
