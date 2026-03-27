@@ -50,7 +50,10 @@ Plans:
 2. Selected target language is saved when changed
 3. Saved language selections are restored when app starts
 
-**Plans:** TBD
+**Plans:** 1/1 plan created
+
+Plans:
+- [ ] 02-01-PLAN.md - Language preference persistence with tauri-plugin-store
 
 ---
 
@@ -59,7 +62,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Translation | 2/2 | Complete   | 2026-03-27 |
-| 2. Language Persistence | 0/3 | Not started | - |
+| 2. Language Persistence | 1/1 | Planning | - |
 
 ## Coverage
 
