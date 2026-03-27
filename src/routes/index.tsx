@@ -101,6 +101,7 @@ function RouteComponent() {
           onChange={async (e) => {
             setSourceLang(e.target.value)
             await store.set('sourceLang', e.target.value)
+            await store.save()
           }}
           className="w-36"
         />
@@ -119,6 +120,7 @@ function RouteComponent() {
           onChange={async (e) => {
             setTargetLang(e.target.value)
             await store.set('targetLang', e.target.value)
+            await store.save()
           }}
           className="w-36"
         />
