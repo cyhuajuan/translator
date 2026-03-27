@@ -5,8 +5,7 @@ import { Loader2, ArrowUpDown, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import { LANGUAGES, type Language } from '@/lib/languages'
+import { LANGUAGES } from '@/lib/languages'
 import store from '@/lib/store'
 
 export const Route = createFileRoute('/')({
@@ -20,7 +19,7 @@ function RouteComponent() {
   const [targetText, setTargetText] = React.useState<string>("")
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [error, setError] = React.useState<string | null>(null)
-  const [storeLoaded, setStoreLoaded] = React.useState(false)
+  const [_storeLoaded, setStoreLoaded] = React.useState(false)
 
   // Load persisted language preferences on mount
   React.useEffect(() => {
