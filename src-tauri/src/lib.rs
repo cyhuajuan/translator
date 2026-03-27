@@ -34,7 +34,7 @@ const LANGUAGE_CODES: &[(&str, &str)] = &[
 fn get_lang_display(code: &str) -> &str {
     LANGUAGE_CODES
         .iter()
-        .find(|(c, _)| c == code)
+        .find(|(c, _)| *c == code)
         .map(|(_, name)| *name)
         .unwrap_or(code)
 }
