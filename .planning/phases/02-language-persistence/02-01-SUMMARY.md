@@ -104,7 +104,22 @@ Each task was committed atomically:
 
 ## Issues Encountered
 
-None - all tasks completed without problems.
+### UAT Discovered Issues (Fixed During Testing)
+
+1. **Missing store:default capability**
+   - Root cause: capabilities/default.json did not include store permissions
+   - Fix: Added "store:default" to permissions array
+   - Committed: 97ed985
+
+2. **LazyStore autoSave conflict**
+   - Root cause: LazyStore defaults to autoSave with 100ms debounce, conflicting with explicit save()
+   - Fix: Set autoSave: false, defaults: {} in store.ts
+   - Committed: ef9bd12
+
+3. **Missing store.save() calls**
+   - Root cause: store.set() alone doesn't persist to disk - save() is required
+   - Fix: Added await store.save() after each store.set() in onChange handlers
+   - Committed: ef9bd12
 
 ## Next Phase Readiness
 
