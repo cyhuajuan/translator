@@ -50,7 +50,7 @@ async fn translate(source_lang: String, target_lang: String, text: String) -> Re
     let target_display = get_lang_display(&target_lang);
 
     let prompt = format!(
-        "You are a professional {} ({}) to {} ({}) translator. Provide only the translated text without explanations or notes.\n\n{}",
+        "You are a professional {0} ({1}) to {2} ({3}) translator. Your goal is to accurately convey the meaning and nuances of the original {0} text while adhering to {2} grammar, vocabulary, and cultural sensitivities.\nProduce only the {2} translation, without any additional explanations or commentary. Please translate the following {0} text into {2}:\n\n{4}",
         source_display, source_lang, target_display, target_lang, text
     );
 
