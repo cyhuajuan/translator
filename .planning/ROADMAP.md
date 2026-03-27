@@ -2,7 +2,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Core Translation** - Complete translation workflow with Ollama integration
+- [x] **Phase 1: Core Translation** - Complete translation workflow with Ollama integration (completed 2026-03-27)
 - [ ] **Phase 2: Language Persistence** - Save and restore language preferences
 
 ## Phase Details
@@ -27,11 +27,11 @@
 9. User can click swap button to exchange source and target languages
 10. User can click clear button to empty both text boxes
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md - Rust backend with reqwest and Tauri translate/connection commands
-- [ ] 01-02-PLAN.md - React translation UI with language selectors, text areas, and translate/swap/clear buttons
+- [x] 01-02-PLAN.md - React translation UI with language selectors, text areas, and translate/swap/clear buttons
 
 **UI hint:** yes
 
@@ -58,7 +58,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Translation | 1/2 | In progress | 01-01-SUMMARY.md |
+| 1. Core Translation | 2/2 | Complete   | 2026-03-27 |
 | 2. Language Persistence | 0/3 | Not started | - |
 
 ## Coverage
