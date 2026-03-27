@@ -27,7 +27,11 @@
 9. User can click swap button to exchange source and target languages
 10. User can click clear button to empty both text boxes
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md - Rust backend with reqwest and Tauri translate/connection commands
+- [ ] 01-02-PLAN.md - React translation UI with language selectors, text areas, and translate/swap/clear buttons
 
 **UI hint:** yes
 
@@ -54,7 +58,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Translation | 0/10 | Not started | - |
+| 1. Core Translation | 0/2 | Not started | - |
 | 2. Language Persistence | 0/3 | Not started | - |
 
 ## Coverage
