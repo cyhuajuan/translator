@@ -7,6 +7,7 @@ import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { LANGUAGES, type Language } from '@/lib/languages'
+import store from '@/lib/store'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -19,6 +20,24 @@ function RouteComponent() {
   const [targetText, setTargetText] = React.useState<string>("")
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [error, setError] = React.useState<string | null>(null)
+  const [storeLoaded, setStoreLoaded] = React.useState(false)
+
+  // Load persisted language preferences on mount
+  React.useEffect(() => {
+    const loadPrefs = async () => {
+      try {
+        await store.init()
+        const savedSource = await store.get<string>('sourceLang')
+        const savedTarget = await store.get<string>('targetLang')
+        if (savedSource) setSourceLang(savedSource)
+        if (savedTarget) setTargetLang(savedTarget)
+      } catch (e) {
+        // Silently fall back to defaults (en->zh) per research recommendation
+      }
+      setStoreLoaded(true)
+    }
+    loadPrefs()
+  }, [])
 
   const handleTranslate = React.useCallback(async () => {
     if (!sourceText.trim()) {
@@ -80,7 +99,10 @@ function RouteComponent() {
         <Select
           options={LANGUAGES.map((l) => ({ value: l.code, label: l.name }))}
           value={sourceLang}
-          onChange={(e) => setSourceLang(e.target.value)}
+          onChange={async (e) => {
+            setSourceLang(e.target.value)
+            await store.set('sourceLang', e.target.value)
+          }}
           className="w-36"
         />
         <Button
@@ -95,7 +117,10 @@ function RouteComponent() {
         <Select
           options={LANGUAGES.map((l) => ({ value: l.code, label: l.name }))}
           value={targetLang}
-          onChange={(e) => setTargetLang(e.target.value)}
+          onChange={async (e) => {
+            setTargetLang(e.target.value)
+            await store.set('targetLang', e.target.value)
+          }}
           className="w-36"
         />
       </div>
