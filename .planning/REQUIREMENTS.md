@@ -46,7 +46,7 @@
 |-------------|-------|--------|
 | UI-01 | Phase 1 | Pending |
 | UI-02 | Phase 1 | Pending |
-| UI-03 | Phase 1 | Pending |
+| UI-03 | Phase 2 | Pending |
 | UI-04 | Phase 1 | Pending |
 | UI-05 | Phase 1 | Pending |
 | TRN-01 | Phase 1 | Pending |
@@ -59,8 +59,11 @@
 
 **Coverage:**
 - v1 requirements: 12 total
-- Mapped to phases: 12
-- Unmapped: 0 ✓
+- Phase 1: 11 requirements
+- Phase 2: 1 requirement
+- Mapped: 12/12
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-27*
+*Roadmap created: 2026-03-27*
