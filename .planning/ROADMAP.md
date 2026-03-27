@@ -30,7 +30,7 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md - Rust backend with reqwest and Tauri translate/connection commands
+- [x] 01-01-PLAN.md - Rust backend with reqwest and Tauri translate/connection commands
 - [ ] 01-02-PLAN.md - React translation UI with language selectors, text areas, and translate/swap/clear buttons
 
 **UI hint:** yes
@@ -58,7 +58,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Translation | 0/2 | Not started | - |
+| 1. Core Translation | 1/2 | In progress | 01-01-SUMMARY.md |
 | 2. Language Persistence | 0/3 | Not started | - |
 
 ## Coverage

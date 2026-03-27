@@ -16,15 +16,15 @@
 ### 翻译功能 (Translation)
 
 - [ ] **TRN-01**: 用户在输入框输入文本后，点击翻译按钮发起翻译请求
-- [ ] **TRN-02**: 翻译请求调用本地 Ollama translategemma 模型
-- [ ] **TRN-03**: 翻译结果（仅译文）显示在输出文本框
+- [x] **TRN-02**: 翻译请求调用本地 Ollama translategemma 模型
+- [x] **TRN-03**: 翻译结果（仅译文）显示在输出文本框
 - [ ] **TRN-04**: 翻译过程中显示加载动画，禁用翻译按钮
 - [ ] **TRN-05**: 翻译完成后恢复翻译按钮可用状态
 
 ### Ollama 连接 (Connection)
 
-- [ ] **CONN-01**: 检测 Ollama 服务是否运行，未运行时显示友好错误提示
-- [ ] **CONN-02**: 检测模型是否可用，不可用时提示用户拉取模型
+- [x] **CONN-01**: 检测 Ollama 服务是否运行，未运行时显示友好错误提示
+- [x] **CONN-02**: 检测模型是否可用，不可用时提示用户拉取模型
 
 ## v2 Requirements
 
@@ -50,12 +50,12 @@
 | UI-04 | Phase 1 | Pending |
 | UI-05 | Phase 1 | Pending |
 | TRN-01 | Phase 1 | Pending |
-| TRN-02 | Phase 1 | Pending |
-| TRN-03 | Phase 1 | Pending |
+| TRN-02 | Phase 1 | Complete (01-01) |
+| TRN-03 | Phase 1 | Complete (01-01) |
 | TRN-04 | Phase 1 | Pending |
 | TRN-05 | Phase 1 | Pending |
-| CONN-01 | Phase 1 | Pending |
-| CONN-02 | Phase 1 | Pending |
+| CONN-01 | Phase 1 | Complete (01-01) |
+| CONN-02 | Phase 1 | Complete (01-01) |
 
 **Coverage:**
 - v1 requirements: 12 total
