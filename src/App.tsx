@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/select";
 import { Trash2, ArrowRight, ArrowLeftRight, Settings, Minus, Square, X } from "lucide-react";
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { SettingsDialog } from "@/components/SettingsDialog";
+import { useState } from "react";
 
 function App() {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   return (
     <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative pt-16">
       {/* Title Bar */}
@@ -46,6 +49,7 @@ function App() {
         <Button
           variant="ghost"
           size="icon"
+          onClick={() => setIsSettingsOpen(true)}
           className="w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all shadow-sm border-none hover:scale-105 active:scale-95"
         >
           <Settings className="w-5 h-5" />
@@ -150,6 +154,8 @@ function App() {
       {/* Decorative Kinetic Background Elements */}
       <div className="fixed -top-20 -left-20 w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[100px] -z-10"></div>
       <div className="fixed -bottom-20 -right-20 w-[30vw] h-[30vw] bg-tertiary/5 rounded-full blur-[80px] -z-10"></div>
+      
+      <SettingsDialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
     </div>
   );
 }
