@@ -8,11 +8,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Trash2, ArrowRight, ArrowLeftRight, Settings } from "lucide-react";
+import { Trash2, ArrowRight, ArrowLeftRight, Settings, Minus, Square, X } from "lucide-react";
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative">
+    <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative pt-16">
+      {/* Title Bar */}
+      <div data-tauri-drag-region className="h-10 fixed top-0 left-0 right-0 z-50 flex items-center justify-between select-none backdrop-blur-sm bg-surface-container-lowest/50 border-b border-outline-variant/20">
+        <div data-tauri-drag-region className="flex items-center pl-4 w-full h-full text-on-surface-variant font-bold text-xs uppercase tracking-widest pointer-events-none">
+           Translator
+        </div>
+        <div className="flex items-center h-full">
+          <div 
+            className="h-full px-4 flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant transition-colors cursor-pointer"
+            onClick={() => getCurrentWindow().minimize()}
+          >
+            <Minus className="w-4 h-4" />
+          </div>
+          <div 
+            className="h-full px-4 flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant transition-colors cursor-pointer"
+            onClick={() => getCurrentWindow().toggleMaximize()}
+          >
+            <Square className="w-3.5 h-3.5" />
+          </div>
+          <div 
+            className="h-full px-4 flex items-center justify-center hover:bg-error hover:text-white text-on-surface-variant transition-colors cursor-pointer"
+            onClick={() => getCurrentWindow().close()}
+          >
+            <X className="w-4 h-4" />
+          </div>
+        </div>
+      </div>
+
       {/* Settings Button */}
       <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-50">
         <Button
