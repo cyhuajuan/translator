@@ -8,11 +8,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Trash2, ArrowRight, ArrowLeftRight } from "lucide-react";
+import { Trash2, ArrowRight, ArrowLeftRight, Settings } from "lucide-react";
 
 function App() {
   return (
     <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative">
+      {/* Settings Button */}
+      <div className="absolute top-6 right-6 md:top-12 md:right-12 z-50">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all shadow-sm border-none hover:scale-105 active:scale-95"
+        >
+          <Settings className="w-5 h-5" />
+        </Button>
+      </div>
       <main className="w-full max-w-[1200px] flex flex-col gap-8 z-10">
         {/* Language Selectors Control Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 px-4">
@@ -80,14 +90,14 @@ function App() {
           <div className="bg-surface-container-low p-8 md:p-12 relative flex flex-col min-h-[400px]">
             <Textarea
               placeholder="输入需要翻译的内容..."
-              className="min-h-[400px] w-full resize-none border-none bg-transparent p-0 text-2xl md:text-3xl font-medium focus-visible:ring-0 rounded-none shadow-none text-on-surface placeholder:text-on-surface-variant/30 leading-relaxed"
+              className="min-h-[400px] w-full resize-none border-none bg-transparent p-0 text-base md:text-lg font-medium focus-visible:ring-0 rounded-none shadow-none text-on-surface placeholder:text-on-surface-variant/30 leading-relaxed"
             />
           </div>
 
           {/* Output Cell */}
           <div className="bg-surface-container-lowest p-8 md:p-12 relative flex flex-col min-h-[400px]">
             <div className="flex-1">
-              <p className="text-primary font-extrabold italic tracking-tight leading-tight text-2xl md:text-3xl selection:bg-primary selection:text-white m-0">
+              <p className="text-primary font-extrabold italic tracking-tight leading-tight text-base md:text-lg selection:bg-primary selection:text-white m-0">
                 让您的灵感在语言间自由流动。
               </p>
             </div>
