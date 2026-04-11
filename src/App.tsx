@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative">
       {/* Settings Button */}
-      <div className="absolute top-6 right-6 md:top-12 md:right-12 z-50">
+      <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-50">
         <Button
           variant="ghost"
           size="icon"
