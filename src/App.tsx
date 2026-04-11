@@ -1,4 +1,13 @@
 import "./index.css";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function App() {
   return (
@@ -9,70 +18,89 @@ function App() {
           <div className="language-selectors">
             <div className="selector-group">
               <label>源语言</label>
-              <select defaultValue="英语">
-                <option>英语</option>
-                <option>法语</option>
-                <option>德语</option>
-                <option>西班牙语</option>
-                <option>日语</option>
-              </select>
+              <Select defaultValue="英语">
+                <SelectTrigger className="w-full bg-surface-container-high border-none h-14 rounded-full font-bold px-6">
+                  <SelectValue placeholder="选择语言" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="英语">英语</SelectItem>
+                  <SelectItem value="法语">法语</SelectItem>
+                  <SelectItem value="德语">德语</SelectItem>
+                  <SelectItem value="西班牙语">西班牙语</SelectItem>
+                  <SelectItem value="日语">日语</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="swap-button-container">
-              <button className="swap-button">
+              <Button
+                variant="outline"
+                size="icon"
+                className="swap-button border-none"
+              >
                 <span className="material-symbols-outlined">swap_horiz</span>
-              </button>
+              </Button>
             </div>
             <div className="selector-group">
               <label>目标语言</label>
-              <select defaultValue="法语">
-                <option>法语</option>
-                <option>英语</option>
-                <option>德语</option>
-                <option>西班牙语</option>
-                <option>日语</option>
-              </select>
+              <Select defaultValue="法语">
+                <SelectTrigger className="w-full bg-surface-container-high border-none h-14 rounded-full font-bold px-6">
+                  <SelectValue placeholder="选择语言" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="法语">法语</SelectItem>
+                  <SelectItem value="英语">英语</SelectItem>
+                  <SelectItem value="德语">德语</SelectItem>
+                  <SelectItem value="西班牙语">西班牙语</SelectItem>
+                  <SelectItem value="日语">日语</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-          
+
           {/* Clear Action */}
-          <button className="clear-button">
-            <span className="material-symbols-outlined">delete_sweep</span>
+          <Button
+            variant="ghost"
+            className="clear-button hover:bg-surface-container-high hover:text-error"
+          >
+            <span className="material-symbols-outlined mr-2 text-xl">
+              delete_sweep
+            </span>
             清空
-          </button>
+          </Button>
         </div>
 
         {/* The Canvas: Asymmetric Translation Cells */}
         <div className="translation-cells">
           {/* Input Cell */}
-          <div className="input-cell">
-            <textarea placeholder="输入需要翻译的内容..."></textarea>
-            <div className="cell-bottom-controls"></div>
+          <div className="input-cell p-0">
+            <Textarea
+              placeholder="输入需要翻译的内容..."
+              className="min-h-[400px] w-full resize-none border-none bg-transparent p-8 md:p-12 text-2xl md:text-3xl font-medium focus-visible:ring-0 rounded-none shadow-none"
+            />
           </div>
-          
+
           {/* Output Cell */}
-          <div className="output-cell">
+          <div className="output-cell p-8 md:p-12">
             <div className="output-content">
-              <p className="translated-text">
-                让您的灵感在语言间自由流动。
-              </p>
+              <p className="translated-text">让您的灵感在语言间自由流动。</p>
             </div>
-            <div className="cell-bottom-controls"></div>
-            {/* Intentional Asymmetry: The Kinetic Accent */}
             <div className="kinetic-accent"></div>
           </div>
         </div>
 
         {/* Action Area */}
         <div className="action-area">
-          <button className="translate-button">
+          <Button className="translate-button h-auto hover:bg-transparent">
             <span className="translate-text">翻译</span>
-            <div className="translate-icon">
-              <span className="material-symbols-outlined">arrow_forward_ios</span>
+            <div className="translate-icon ml-4">
+              <span className="material-symbols-outlined text-sm">
+                arrow_forward_ios
+              </span>
             </div>
-          </button>
+          </Button>
         </div>
       </main>
-      
+
       {/* Decorative Kinetic Background Elements */}
       <div className="bg-blob primary-blob"></div>
       <div className="bg-blob tertiary-blob"></div>
