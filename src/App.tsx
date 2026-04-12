@@ -178,7 +178,7 @@ function App() {
               <label className="block text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant mb-2 ml-4">
                 源语言
               </label>
-              <Select value={sourceLang} onValueChange={setSourceLang}>
+              <Select value={sourceLang} onValueChange={(v) => v !== null && setSourceLang(v)}>
                 <SelectTrigger className="w-full bg-surface-container-high border-none h-14 rounded-full font-bold px-6 text-base text-on-surface focus:ring-2 focus:ring-primary/20 shadow-none">
                   <SelectValue placeholder="选择语言" />
                 </SelectTrigger>
@@ -206,7 +206,7 @@ function App() {
               <label className="block text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant mb-2 ml-4">
                 目标语言
               </label>
-              <Select value={targetLang} onValueChange={setTargetLang}>
+              <Select value={targetLang} onValueChange={(v) => v !== null && setTargetLang(v)}>
                 <SelectTrigger className="w-full bg-surface-container-high border-none h-14 rounded-full font-bold px-6 text-base text-on-surface focus:ring-2 focus:ring-primary/20 shadow-none">
                   <SelectValue placeholder="选择语言" />
                 </SelectTrigger>
