@@ -11,7 +11,6 @@ export interface TranslationService {
 export interface Settings {
   defaultSourceLang: string;
   defaultTargetLang: string;
-  autoTranslate: boolean;
   services: TranslationService[];
   activeServiceId: string | null;
   systemPrompt: string;
@@ -23,7 +22,6 @@ export const DEFAULT_SYSTEM_PROMPT =
 const defaultSettings: Settings = {
   defaultSourceLang: "中文",
   defaultTargetLang: "英文",
-  autoTranslate: false,
   services: [
     {
       id: "default-openai",

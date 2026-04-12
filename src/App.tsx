@@ -27,7 +27,6 @@ function App() {
   const [isTranslating, setIsTranslating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const autoTranslateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Synchronize with settings defaults when they change
   useEffect(() => {
@@ -103,24 +102,6 @@ function App() {
     }
   }, [sourceText, sourceLang, targetLang, settings]);
 
-  // Auto-translate with debounce
-  useEffect(() => {
-    if (!settings.autoTranslate || !sourceText.trim()) return;
-
-    if (autoTranslateTimerRef.current) {
-      clearTimeout(autoTranslateTimerRef.current);
-    }
-
-    autoTranslateTimerRef.current = setTimeout(() => {
-      handleTranslate();
-    }, 500);
-
-    return () => {
-      if (autoTranslateTimerRef.current) {
-        clearTimeout(autoTranslateTimerRef.current);
-      }
-    };
-  }, [sourceText, sourceLang, targetLang, settings.autoTranslate, handleTranslate]);
 
   const toggleLanguages = () => {
     const tempLang = sourceLang;

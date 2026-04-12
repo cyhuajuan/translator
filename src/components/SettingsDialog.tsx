@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -95,18 +94,6 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                     <SelectItem value="韩文">韩文</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="text-base font-bold">自动翻译</Label>
-                  <p className="text-xs text-on-surface-variant">停止输入后自动触发翻译。</p>
-                </div>
-                <Switch
-                  checked={settings.autoTranslate}
-                  onCheckedChange={(checked) => updateSetting("autoTranslate", checked)}
-                  className="data-[state=checked]:bg-primary"
-                />
               </div>
             </TabsContent>
 
