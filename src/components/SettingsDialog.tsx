@@ -10,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, Trash2, RotateCcw } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -19,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSettings, type TranslationService } from "@/hooks/useSettings";
+import { useSettings, DEFAULT_SYSTEM_PROMPT, type TranslationService } from "@/hooks/useSettings";
 
 interface SettingsDialogProps {
   open: boolean;
@@ -43,8 +44,9 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
 
         <Tabs defaultValue="translation" className="w-full">
           <div className="px-6 pt-4">
-            <TabsList className="grid w-full grid-cols-2 bg-surface-container-high/50 p-1 rounded-full">
+            <TabsList className="grid w-full grid-cols-3 bg-surface-container-high/50 p-1 rounded-full">
               <TabsTrigger value="translation" className="rounded-full font-bold data-[state=active]:bg-primary data-[state=active]:text-white">翻译</TabsTrigger>
+              <TabsTrigger value="prompt" className="rounded-full font-bold data-[state=active]:bg-primary data-[state=active]:text-white">提示词</TabsTrigger>
               <TabsTrigger value="advanced" className="rounded-full font-bold data-[state=active]:bg-primary data-[state=active]:text-white">高级</TabsTrigger>
             </TabsList>
           </div>
@@ -105,6 +107,54 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                   onCheckedChange={(checked) => updateSetting("autoTranslate", checked)}
                   className="data-[state=checked]:bg-primary"
                 />
+              </div>
+            </TabsContent>
+
+            {/* 系统提示词设置 */}
+            <TabsContent value="prompt" className="space-y-5 m-0 animate-in fade-in-50 zoom-in-95 duration-200">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-base font-bold">系统提示词模板</Label>
+                    <p className="text-xs text-on-surface-variant">自定义发送给 AI 的系统级指令。</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => updateSetting("systemPrompt", DEFAULT_SYSTEM_PROMPT)}
+                    className="rounded-full text-xs font-bold h-8 text-on-surface-variant hover:text-primary"
+                  >
+                    <RotateCcw className="w-3 h-3 mr-1" />
+                    恢复默认
+                  </Button>
+                </div>
+                <Textarea
+                  value={settings.systemPrompt}
+                  onChange={(e) => updateSetting("systemPrompt", e.target.value)}
+                  placeholder="输入系统提示词..."
+                  rows={6}
+                  className="resize-none border-none bg-surface-container-high rounded-xl text-sm focus-visible:ring-1 focus-visible:ring-primary shadow-none leading-relaxed"
+                />
+              </div>
+
+              <div className="bg-surface-container-high/50 rounded-xl p-4 space-y-2">
+                <p className="text-xs font-bold text-on-surface-variant">可用变量</p>
+                <div className="flex flex-wrap gap-2">
+                  <code className="text-xs bg-primary/10 text-primary font-bold px-2.5 py-1 rounded-full">{'{{sourceLang}}'}</code>
+                  <span className="text-xs text-on-surface-variant self-center">— 源语言英文名 (如 Chinese)</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <code className="text-xs bg-primary/10 text-primary font-bold px-2.5 py-1 rounded-full">{'{{targetLang}}'}</code>
+                  <span className="text-xs text-on-surface-variant self-center">— 目标语言英文名 (如 English)</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <code className="text-xs bg-primary/10 text-primary font-bold px-2.5 py-1 rounded-full">{'{{sourceLangCode}}'}</code>
+                  <span className="text-xs text-on-surface-variant self-center">— 源语言代码 (如 zh-CN)</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <code className="text-xs bg-primary/10 text-primary font-bold px-2.5 py-1 rounded-full">{'{{targetLangCode}}'}</code>
+                  <span className="text-xs text-on-surface-variant self-center">— 目标语言代码 (如 en)</span>
+                </div>
               </div>
             </TabsContent>
 
@@ -188,11 +238,11 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                         />
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-xs text-on-surface-variant font-bold leading-none">API URL</Label>
+                        <Label className="text-xs text-on-surface-variant font-bold leading-none">API Base URL</Label>
                         <Input 
                           value={activeService.apiUrl} 
                           onChange={(e) => updateActive({ apiUrl: e.target.value })} 
-                          placeholder="https://api.openai.com/v1/chat/completions"
+                          placeholder="https://api.openai.com/v1"
                           className="h-8 text-sm focus-visible:ring-1 focus-visible:ring-primary border-none shadow-none bg-surface-container-high rounded-lg mt-1"
                         />
                       </div>

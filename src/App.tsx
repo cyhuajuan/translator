@@ -8,11 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Trash2, ArrowRight, ArrowLeftRight, Settings, Minus, Square, X } from "lucide-react";
+import { Trash2, ArrowRight, ArrowLeftRight, Settings, Minus, Square, X, Loader2 } from "lucide-react";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { SettingsDialog } from "@/components/SettingsDialog";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSettings } from "@/hooks/useSettings";
+import { translateText, resolveSystemPrompt } from "@/lib/translate";
 
 function App() {
   const { settings } = useSettings();
@@ -20,17 +21,133 @@ function App() {
   const [sourceLang, setSourceLang] = useState(settings.defaultSourceLang);
   const [targetLang, setTargetLang] = useState(settings.defaultTargetLang);
 
+  // Translation state
+  const [sourceText, setSourceText] = useState("");
+  const [translatedText, setTranslatedText] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const autoTranslateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Synchronize with settings defaults when they change
   useEffect(() => {
     setSourceLang(settings.defaultSourceLang);
     setTargetLang(settings.defaultTargetLang);
   }, [settings.defaultSourceLang, settings.defaultTargetLang]);
 
+  const handleTranslate = useCallback(async () => {
+    if (!sourceText.trim()) return;
+
+    // Find the active service
+    const activeService = settings.services.find(
+      (s) => s.id === settings.activeServiceId
+    );
+    if (!activeService) {
+      setErrorMessage("请先在设置中配置并选择一个翻译服务。");
+      return;
+    }
+    if (!activeService.apiKey) {
+      setErrorMessage("请先在设置中为当前服务配置 API Key。");
+      return;
+    }
+
+    // Abort any ongoing translation
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
+
+    setIsTranslating(true);
+    setErrorMessage(null);
+    setTranslatedText("");
+
+    try {
+      const systemPrompt = resolveSystemPrompt(
+        settings.systemPrompt,
+        sourceLang,
+        targetLang
+      );
+
+      await translateText({
+        text: sourceText,
+        sourceLang,
+        targetLang,
+        service: activeService,
+        systemPrompt,
+        onChunk: (chunk) => {
+          setTranslatedText((prev) => prev + chunk);
+        },
+        signal: abortController.signal,
+      });
+    } catch (err: unknown) {
+      if (err instanceof DOMException && err.name === "AbortError") {
+        // Ignore abort errors
+        return;
+      }
+      console.error("Translation error:", err);
+      let message: string;
+      if (err instanceof Error) {
+        message = err.message;
+      } else if (typeof err === "string") {
+        message = err;
+      } else {
+        message = `翻译过程中发生错误: ${JSON.stringify(err)}`;
+      }
+      setErrorMessage(message);
+    } finally {
+      if (abortControllerRef.current === abortController) {
+        setIsTranslating(false);
+        abortControllerRef.current = null;
+      }
+    }
+  }, [sourceText, sourceLang, targetLang, settings]);
+
+  // Auto-translate with debounce
+  useEffect(() => {
+    if (!settings.autoTranslate || !sourceText.trim()) return;
+
+    if (autoTranslateTimerRef.current) {
+      clearTimeout(autoTranslateTimerRef.current);
+    }
+
+    autoTranslateTimerRef.current = setTimeout(() => {
+      handleTranslate();
+    }, 500);
+
+    return () => {
+      if (autoTranslateTimerRef.current) {
+        clearTimeout(autoTranslateTimerRef.current);
+      }
+    };
+  }, [sourceText, sourceLang, targetLang, settings.autoTranslate, handleTranslate]);
+
   const toggleLanguages = () => {
-    const temp = sourceLang;
+    const tempLang = sourceLang;
     setSourceLang(targetLang);
-    setTargetLang(temp);
+    setTargetLang(tempLang);
+
+    // Also swap the text content if there's translated text
+    if (translatedText) {
+      const tempText = sourceText;
+      setSourceText(translatedText);
+      setTranslatedText(tempText);
+    }
   };
+
+  const handleClear = () => {
+    // Abort any ongoing translation
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setSourceText("");
+    setTranslatedText("");
+    setErrorMessage(null);
+    setIsTranslating(false);
+  };
+
+  const canTranslate = sourceText.trim().length > 0 && !isTranslating;
 
   return (
     <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative pt-16">
@@ -125,6 +242,7 @@ function App() {
           {/* Clear Action */}
           <Button
             variant="ghost"
+            onClick={handleClear}
             className="flex items-center gap-2 text-on-surface-variant font-bold uppercase tracking-[0.1em] h-14 px-8 text-sm bg-surface-container-high rounded-full border-none hover:bg-surface-container-high hover:text-error transition-colors"
           >
             <Trash2 className="w-5 h-5 mr-1" />
@@ -137,6 +255,8 @@ function App() {
           {/* Input Cell */}
           <div className="bg-surface-container-low p-8 md:p-12 relative flex flex-col min-h-[400px]">
             <Textarea
+              value={sourceText}
+              onChange={(e) => setSourceText(e.target.value)}
               placeholder="输入需要翻译的内容..."
               className="min-h-[400px] w-full resize-none border-none bg-transparent p-0 text-base md:text-lg font-medium focus-visible:ring-0 rounded-none shadow-none text-on-surface placeholder:text-on-surface-variant/30 leading-relaxed"
             />
@@ -145,9 +265,28 @@ function App() {
           {/* Output Cell */}
           <div className="bg-surface-container-lowest p-8 md:p-12 relative flex flex-col min-h-[400px]">
             <div className="flex-1">
-              <p className="text-primary font-extrabold italic tracking-tight leading-tight text-base md:text-lg selection:bg-primary selection:text-white m-0">
-                让您的灵感在语言间自由流动。
-              </p>
+              {errorMessage ? (
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-error mt-2 flex-shrink-0 animate-pulse" />
+                  <p className="text-error text-sm font-medium leading-relaxed">{errorMessage}</p>
+                </div>
+              ) : isTranslating && !translatedText ? (
+                <div className="flex items-center gap-3 text-on-surface-variant">
+                  <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                  <span className="text-sm font-medium">正在翻译...</span>
+                </div>
+              ) : translatedText ? (
+                <p className="text-primary font-extrabold italic tracking-tight leading-tight text-base md:text-lg selection:bg-primary selection:text-white m-0 whitespace-pre-wrap">
+                  {translatedText}
+                  {isTranslating && (
+                    <span className="inline-block w-0.5 h-5 bg-primary ml-0.5 animate-pulse align-text-bottom" />
+                  )}
+                </p>
+              ) : (
+                <p className="text-primary font-extrabold italic tracking-tight leading-tight text-base md:text-lg selection:bg-primary selection:text-white m-0">
+                  让您的灵感在语言间自由流动。
+                </p>
+              )}
             </div>
             {/* Intentional Asymmetry: The Kinetic Accent */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full pointer-events-none"></div>
@@ -157,12 +296,23 @@ function App() {
         {/* Action Area */}
         <div className="flex justify-center -mt-12 relative z-10">
           <Button 
-            className="group flex items-center gap-4 bg-gradient-to-tr from-primary to-primary-container text-white h-auto py-5 px-16 md:px-20 rounded-full shadow-[0_12px_40px_rgba(255,109,0,0.4)] hover:scale-105 active:scale-95 transition-all min-w-[240px] border-none hover:opacity-90"
+            onClick={handleTranslate}
+            disabled={!canTranslate}
+            className="group flex items-center gap-4 bg-gradient-to-tr from-primary to-primary-container text-white h-auto py-5 px-16 md:px-20 rounded-full shadow-[0_12px_40px_rgba(255,109,0,0.4)] hover:scale-105 active:scale-95 transition-all min-w-[240px] border-none hover:opacity-90 disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed"
           >
-            <span className="text-lg font-black uppercase tracking-[0.2em]">翻译</span>
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 group-hover:bg-white/40 transition-colors ml-2">
-              <ArrowRight className="w-4 h-4" />
-            </div>
+            {isTranslating ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span className="text-lg font-black uppercase tracking-[0.2em]">翻译中</span>
+              </>
+            ) : (
+              <>
+                <span className="text-lg font-black uppercase tracking-[0.2em]">翻译</span>
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 group-hover:bg-white/40 transition-colors ml-2">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </>
+            )}
           </Button>
         </div>
       </main>

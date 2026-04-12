@@ -14,7 +14,11 @@ export interface Settings {
   autoTranslate: boolean;
   services: TranslationService[];
   activeServiceId: string | null;
+  systemPrompt: string;
 }
+
+export const DEFAULT_SYSTEM_PROMPT =
+  "你是一位专业的翻译专家。请将以下{{sourceLang}}文本翻译为{{targetLang}}，只输出翻译结果，不要添加任何解释或额外内容。";
 
 const defaultSettings: Settings = {
   defaultSourceLang: "中文",
@@ -24,12 +28,13 @@ const defaultSettings: Settings = {
     {
       id: "default-openai",
       name: "OpenAI Default",
-      apiUrl: "https://api.openai.com/v1/chat/completions",
+      apiUrl: "https://api.openai.com/v1",
       apiKey: "",
       model: "gpt-3.5-turbo",
     }
   ],
   activeServiceId: "default-openai",
+  systemPrompt: DEFAULT_SYSTEM_PROMPT,
 };
 
 const SETTINGS_KEY = "translator_settings";
