@@ -239,7 +239,7 @@ function App() {
               value={sourceText}
               onChange={(e) => setSourceText(e.target.value)}
               placeholder="输入需要翻译的内容..."
-              className="min-h-[400px] w-full resize-none border-none bg-transparent p-0 text-base md:text-lg font-medium focus-visible:ring-0 rounded-none shadow-none text-on-surface placeholder:text-on-surface-variant/30 leading-relaxed"
+              className="min-h-[400px] w-full resize-none border-none bg-transparent p-0 text-base md:text-lg font-medium focus-visible:ring-0 rounded-none shadow-none text-on-surface placeholder:text-on-surface-variant/30 leading-tight"
             />
           </div>
 
