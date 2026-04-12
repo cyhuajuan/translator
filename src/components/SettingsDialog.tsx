@@ -66,11 +66,10 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                     <SelectValue placeholder="选择语言" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="英语">英语</SelectItem>
-                    <SelectItem value="法语">法语</SelectItem>
-                    <SelectItem value="德语">德语</SelectItem>
                     <SelectItem value="中文">中文</SelectItem>
-                    <SelectItem value="日语">日语</SelectItem>
+                    <SelectItem value="英文">英文</SelectItem>
+                    <SelectItem value="日文">日文</SelectItem>
+                    <SelectItem value="韩文">韩文</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -88,11 +87,10 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                     <SelectValue placeholder="选择语言" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="英语">英语</SelectItem>
-                    <SelectItem value="法语">法语</SelectItem>
-                    <SelectItem value="德语">德语</SelectItem>
                     <SelectItem value="中文">中文</SelectItem>
-                    <SelectItem value="日语">日语</SelectItem>
+                    <SelectItem value="英文">英文</SelectItem>
+                    <SelectItem value="日文">日文</SelectItem>
+                    <SelectItem value="韩文">韩文</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

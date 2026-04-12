@@ -11,10 +11,27 @@ import {
 import { Trash2, ArrowRight, ArrowLeftRight, Settings, Minus, Square, X } from "lucide-react";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { SettingsDialog } from "@/components/SettingsDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSettings } from "@/hooks/useSettings";
 
 function App() {
+  const { settings } = useSettings();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [sourceLang, setSourceLang] = useState(settings.defaultSourceLang);
+  const [targetLang, setTargetLang] = useState(settings.defaultTargetLang);
+
+  // Synchronize with settings defaults when they change
+  useEffect(() => {
+    setSourceLang(settings.defaultSourceLang);
+    setTargetLang(settings.defaultTargetLang);
+  }, [settings.defaultSourceLang, settings.defaultTargetLang]);
+
+  const toggleLanguages = () => {
+    const temp = sourceLang;
+    setSourceLang(targetLang);
+    setTargetLang(temp);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative pt-16">
       {/* Title Bar */}
@@ -63,16 +80,15 @@ function App() {
               <label className="block text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant mb-2 ml-4">
                 源语言
               </label>
-              <Select defaultValue="英语">
+              <Select value={sourceLang} onValueChange={setSourceLang}>
                 <SelectTrigger className="w-full bg-surface-container-high border-none h-14 rounded-full font-bold px-6 text-base text-on-surface focus:ring-2 focus:ring-primary/20 shadow-none">
                   <SelectValue placeholder="选择语言" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="英语">英语</SelectItem>
-                  <SelectItem value="法语">法语</SelectItem>
-                  <SelectItem value="德语">德语</SelectItem>
-                  <SelectItem value="西班牙语">西班牙语</SelectItem>
-                  <SelectItem value="日语">日语</SelectItem>
+                  <SelectItem value="中文">中文</SelectItem>
+                  <SelectItem value="英文">英文</SelectItem>
+                  <SelectItem value="日文">日文</SelectItem>
+                  <SelectItem value="韩文">韩文</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -81,6 +97,7 @@ function App() {
               <Button
                 variant="outline"
                 size="icon"
+                onClick={toggleLanguages}
                 className="w-12 h-12 rounded-full bg-surface-container-lowest text-primary border-none shadow-[0_4px_12px_rgba(255,109,0,0.1)] hover:scale-110 active:scale-95 transition-all hover:bg-surface-container-lowest hover:text-primary"
               >
                 <ArrowLeftRight className="w-5 h-5" />
@@ -91,16 +108,15 @@ function App() {
               <label className="block text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant mb-2 ml-4">
                 目标语言
               </label>
-              <Select defaultValue="法语">
+              <Select value={targetLang} onValueChange={setTargetLang}>
                 <SelectTrigger className="w-full bg-surface-container-high border-none h-14 rounded-full font-bold px-6 text-base text-on-surface focus:ring-2 focus:ring-primary/20 shadow-none">
                   <SelectValue placeholder="选择语言" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="法语">法语</SelectItem>
-                  <SelectItem value="英语">英语</SelectItem>
-                  <SelectItem value="德语">德语</SelectItem>
-                  <SelectItem value="西班牙语">西班牙语</SelectItem>
-                  <SelectItem value="日语">日语</SelectItem>
+                  <SelectItem value="中文">中文</SelectItem>
+                  <SelectItem value="英文">英文</SelectItem>
+                  <SelectItem value="日文">日文</SelectItem>
+                  <SelectItem value="韩文">韩文</SelectItem>
                 </SelectContent>
               </Select>
             </div>

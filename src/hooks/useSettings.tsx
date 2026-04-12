@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext, ReactNode } from "react";
 
 export interface TranslationService {
   id: string;
@@ -17,8 +17,8 @@ export interface Settings {
 }
 
 const defaultSettings: Settings = {
-  defaultSourceLang: "英语",
-  defaultTargetLang: "法语",
+  defaultSourceLang: "中文",
+  defaultTargetLang: "英文",
   autoTranslate: false,
   services: [
     {
@@ -34,7 +34,15 @@ const defaultSettings: Settings = {
 
 const SETTINGS_KEY = "translator_settings";
 
-export function useSettings() {
+interface SettingsContextType {
+  settings: Settings;
+  updateSetting: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
+  resetSettings: () => void;
+}
+
+const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
+
+export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(() => {
     try {
       const stored = localStorage.getItem(SETTINGS_KEY);
@@ -60,5 +68,17 @@ export function useSettings() {
     setSettings(defaultSettings);
   };
 
-  return { settings, updateSetting, resetSettings };
+  return (
+    <SettingsContext.Provider value={{ settings, updateSetting, resetSettings }}>
+      {children}
+    </SettingsContext.Provider>
+  );
+}
+
+export function useSettings() {
+  const context = useContext(SettingsContext);
+  if (context === undefined) {
+    throw new Error("useSettings must be used within a SettingsProvider");
+  }
+  return context;
 }
