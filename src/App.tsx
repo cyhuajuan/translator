@@ -1,6 +1,7 @@
 import "./index.css";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -27,6 +28,7 @@ function App() {
   const [isTranslating, setIsTranslating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Synchronize with settings defaults when they change
   useEffect(() => {
@@ -126,12 +128,30 @@ function App() {
     setTranslatedText("");
     setErrorMessage(null);
     setIsTranslating(false);
+
+    // Force ScrollArea to recalculate scrollbar visibility.
+    // base-ui's ResizeObserver only watches the viewport element itself, not its content children.
+    // When the textarea shrinks (via field-sizing:content), the viewport's own dimensions don't
+    // change, so the observer never fires. Dispatching a scroll event triggers the viewport's
+    // onScroll handler which calls computeThumbPosition() to re-evaluate hiddenState.
+    // Double rAF ensures React re-render + browser layout are both complete before we act.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const viewport = scrollAreaRef.current?.querySelector(
+          '[data-slot="scroll-area-viewport"]'
+        );
+        if (viewport) {
+          viewport.scrollTop = 0;
+          viewport.dispatchEvent(new Event("scroll"));
+        }
+      });
+    });
   };
 
   const canTranslate = sourceText.trim().length > 0 && !isTranslating;
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-6 md:p-12 box-border overflow-hidden relative pt-16">
+    <div className="h-screen w-full relative overflow-hidden text-on-surface">
       {/* Title Bar */}
       <div data-tauri-drag-region className="h-10 fixed top-0 left-0 right-0 z-50 flex items-center justify-between select-none backdrop-blur-sm bg-surface-container-lowest/50 border-b border-outline-variant/20">
         <div data-tauri-drag-region className="flex items-center pl-4 w-full h-full text-on-surface-variant font-bold text-xs uppercase tracking-widest pointer-events-none">
@@ -160,7 +180,7 @@ function App() {
       </div>
 
       {/* Settings Button */}
-      <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-50">
+      <div className="fixed bottom-6 left-6 md:bottom-12 md:left-12 z-50">
         <Button
           variant="ghost"
           size="icon"
@@ -170,7 +190,10 @@ function App() {
           <Settings className="w-5 h-5" />
         </Button>
       </div>
-      <main className="w-full max-w-[1200px] flex flex-col gap-8 z-10">
+
+      <ScrollArea ref={scrollAreaRef} className="h-full w-full">
+        <div className="flex justify-center p-6 md:p-12 box-border relative pt-16 pb-24">
+          <main className="w-full max-w-[1200px] flex flex-col gap-8 z-10">
         {/* Language Selectors Control Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 px-4">
           <div className="flex items-center gap-4 w-full md:w-auto">
@@ -296,7 +319,9 @@ function App() {
             )}
           </Button>
         </div>
-      </main>
+          </main>
+        </div>
+      </ScrollArea>
 
       {/* Decorative Kinetic Background Elements */}
       <div className="fixed -top-20 -left-20 w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[100px] -z-10"></div>
